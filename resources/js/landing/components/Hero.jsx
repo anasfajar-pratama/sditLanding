@@ -30,10 +30,22 @@ function HeroCentered({ hero, settings }) {
       <FloatingFlower color="#f97316" size={60} style={{ position: 'absolute', top: 120, left: '15%', opacity: 0.2, animationDelay: '2s' }} />
       <FloatingFlower color="#0d9488" size={50} style={{ position: 'absolute', bottom: 110, right: '12%', opacity: 0.2, animationDelay: '0.8s' }} />
 
+      {/* {{-- Rainbow arch --}} */}
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl opacity-10 pointer-events-none">
+          <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 200 Q200 -50 390 200" stroke="#ef4444" stroke-width="12" fill="none"/>
+              <path d="M25 200 Q200 -20 375 200" stroke="#f97316" stroke-width="12" fill="none"/>
+              <path d="M40 200 Q200 10 360 200" stroke="#facc15" stroke-width="12" fill="none"/>
+              <path d="M55 200 Q200 30 345 200" stroke="#22c55e" stroke-width="12" fill="none"/>
+              <path d="M70 200 Q200 50 330 200" stroke="#3b82f6" stroke-width="12" fill="none"/>
+              <path d="M85 200 Q200 65 315 200" stroke="#8b5cf6" stroke-width="12" fill="none"/>
+          </svg>
+      </div>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center">
         <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm rounded-full px-5 py-2 mb-8 shadow-sm">
           <span className="text-yellow-500">⭐</span>
-          <span className="text-sm font-bold text-gray-700">
+          {/* <span className="text-sm font-bold text-gray-700"> */}
+          <span className="text-sm font-bold text-orange-500">
             {hero.badge || 'Akreditasi A — Tahun Ajaran 2025/2026'}
           </span>
         </div>

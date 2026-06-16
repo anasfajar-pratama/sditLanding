@@ -32,7 +32,7 @@ export default function Sidebar({ active, onNavigate, isOpen, onClose }) {
             BC
           </div>
           <div>
-            <div className="font-display font-bold text-sm">SDIT Admin</div>
+            <div className="font-display font-bold text-sm">Bunga Cempaka</div>
             <div className="text-xs text-gray-400">{admin?.name || 'Administrator'}</div>
           </div>
         </div>

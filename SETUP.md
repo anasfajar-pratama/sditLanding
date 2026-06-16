@@ -1,4 +1,5 @@
 # Panduan Setup SDIT Bunga Cempaka — Hostinger
+# foto header guru bisa di set sendiri tanpa dari profil guru.
 
 ## Persyaratan Server
 - PHP 8.2+

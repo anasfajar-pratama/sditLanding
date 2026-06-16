@@ -14,7 +14,7 @@ export default function Navbar({ settings }) {
   const links = [
     { href: '#tentang', label: 'Tentang' },
     { href: '#program', label: 'Program' },
-    { href: '#guru', label: 'Guru' },
+    { href: '#pendidik', label: 'Pendidik' },
     { href: '#fasilitas', label: 'Fasilitas' },
     { href: '#testimoni', label: 'Testimoni' },
     { href: '#kontak', label: 'Kontak' },
