@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+        font-family: 'Nunito', sans-serif;
+        overflow-x: hidden;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Fredoka', sans-serif;
+    }
+}
+
+@layer components {
+    .bg-rainbow {
+        background: linear-gradient(135deg, #fce7f3 0%, #fef9c3 30%, #d1fae5 65%, #dbeafe 100%);
+    }
+    .text-gradient {
+        background: linear-gradient(90deg, #f97316, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .card-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card-lift:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+    .img-zoom { overflow: hidden; }
+    .img-zoom img { transition: transform 0.5s ease; }
+    .img-zoom:hover img { transform: scale(1.07); }
+    .gradient-border {
+        background: linear-gradient(white, white) padding-box,
+                    linear-gradient(135deg, #f97316, #ec4899, #0d9488) border-box;
+        border: 3px solid transparent;
+    }
+}
