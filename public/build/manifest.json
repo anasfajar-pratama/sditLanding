@@ -1,0 +1,39 @@
+{
+  "_jsx-runtime-BRFKyH8R.js": {
+    "file": "assets/jsx-runtime-BRFKyH8R.js",
+    "name": "jsx-runtime"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-Cwcuw5sL.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/admin/main.jsx": {
+    "file": "assets/main-BBzCBN_M.js",
+    "name": "main",
+    "src": "resources/js/admin/main.jsx",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-BRFKyH8R.js"
+    ],
+    "css": [
+      "assets/app-Cwcuw5sL.css"
+    ]
+  },
+  "resources/js/landing/main.jsx": {
+    "file": "assets/main-DaEgF_ic.js",
+    "name": "main",
+    "src": "resources/js/landing/main.jsx",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-BRFKyH8R.js"
+    ],
+    "css": [
+      "assets/app-Cwcuw5sL.css"
+    ]
+  }
+}
