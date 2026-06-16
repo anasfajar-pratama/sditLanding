@@ -9,6 +9,10 @@ class ImageHelper
     public static function compress(UploadedFile $file, string $folder = 'images', int $quality = 75): string
     {
         $uploadPath = public_path('uploads/' . $folder);
+        if (app()->environment('production')) {
+            $uploadPath = env('UPLOAD_PATH') . '/' . $folder;
+        }
+        
         if (!file_exists($uploadPath)) {
             mkdir($uploadPath, 0755, true);
         }
