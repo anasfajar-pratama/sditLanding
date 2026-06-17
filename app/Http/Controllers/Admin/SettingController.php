@@ -52,6 +52,13 @@ class SettingController extends Controller
             Setting::set('favicon', $path);
         }
 
+        if ($request->hasFile('prestasi_image')) {
+            $old = Setting::get('prestasi_image');
+            if ($old) ImageHelper::delete($old);
+            $path = ImageHelper::compress($request->file('prestasi_image'), 'settings', 85);
+            Setting::set('prestasi_image', $path);
+        }
+
         return response()->json(['message' => 'Pengaturan berhasil disimpan.', 'data' => Setting::getAllAsArray()]);
     }
 }

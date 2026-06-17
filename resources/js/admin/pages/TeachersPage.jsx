@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../api';
 import { FormField, Input, Textarea, Select, Card, PageHeader, ImageUpload } from '../components/FormField';
-import { Plus, Trash2, Edit, Check, X, User, Star } from 'lucide-react';
+import { Plus, Trash2, Edit, Check, X, User, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 function TeacherForm({ initial = {}, onSave, onCancel, isNew }) {
@@ -9,7 +9,6 @@ function TeacherForm({ initial = {}, onSave, onCancel, isNew }) {
     name: initial.name || '', position: initial.position || '',
     education: initial.education || '', bio: initial.bio || '',
     is_active: initial.is_active !== false,
-    is_featured: initial.is_featured === true,
   });
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(initial.photo_url || null);
@@ -59,18 +58,7 @@ function TeacherForm({ initial = {}, onSave, onCancel, isNew }) {
       <FormField label="Bio Singkat">
         <Textarea value={form.bio} onChange={set('bio')} rows={2} placeholder="Berpengalaman mengajar selama..." />
       </FormField>
-      <div className="flex items-center gap-3 p-3 bg-yellow-50 rounded-xl border border-yellow-200">
-        <input
-          type="checkbox"
-          id={`featured-${initial.id || 'new'}`}
-          checked={form.is_featured}
-          onChange={e => setForm(p => ({ ...p, is_featured: e.target.checked }))}
-          className="w-4 h-4 accent-primary"
-        />
-        <label htmlFor={`featured-${initial.id || 'new'}`} className="text-sm font-semibold text-yellow-800 cursor-pointer">
-          ⭐ Tandai sebagai foto utama (ditampilkan besar di bagian atas section Pendidik)
-        </label>
-      </div>
+
       <FormField label="Foto Guru">
         <ImageUpload label="Upload Foto" preview={preview}
           onChange={(e) => { const f = e.target.files[0]; if (f) { setFile(f); setPreview(URL.createObjectURL(f)); } }}
@@ -91,8 +79,41 @@ export default function TeachersPage() {
   const [teachers, setTeachers] = useState([]);
   const [adding, setAdding] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [prestasiFile, setPrestasiFile] = useState(null);
+  const [prestasiPreview, setPrestasiPreview] = useState(null);
+  const [prestasiSaving, setPrestasiSaving] = useState(false);
 
-  useEffect(() => { api.get('/teachers').then(setTeachers).catch(() => {}); }, []);
+  useEffect(() => {
+    api.get('/teachers').then(setTeachers).catch(() => {});
+    api.get('/settings').then(data => {
+      if (data.prestasi_image) setPrestasiPreview('/' + data.prestasi_image);
+    }).catch(() => {});
+  }, []);
+
+  const savePrestasiImage = async () => {
+    if (!prestasiFile) return;
+    setPrestasiSaving(true);
+    try {
+      const fd = new FormData();
+      fd.append('prestasi_image', prestasiFile);
+      fd.append('_method', 'PUT');
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        credentials: 'same-origin',
+        body: fd,
+      });
+      if (!res.ok) throw new Error('Gagal menyimpan');
+      toast.success('Gambar prestasi berhasil disimpan!');
+    } catch (e) {
+      toast.error(e.message);
+    } finally {
+      setPrestasiSaving(false);
+    }
+  };
 
   const del = async (id) => {
     if (!confirm('Hapus guru ini?')) return;
@@ -103,9 +124,27 @@ export default function TeachersPage() {
   return (
     <div>
       <PageHeader title="Data Pendidik" subtitle="Kelola informasi guru dan pengajar yang tampil di section Pendidik Berdedikasi" />
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-5 text-sm text-blue-700">
-        💡 <strong>Tips:</strong> Tandai satu guru sebagai "foto utama" — fotonya akan ditampilkan besar di bagian atas section Pendidik. Maksimal 6 guru tampil di grid.
-      </div>
+
+      {/* Prestasi Image */}
+      <Card className="mb-6">
+        <h3 className="font-display font-bold text-lg text-gray-800 mb-3">Gambar Section Pendidik Berprestasi</h3>
+        <p className="text-sm text-gray-500 mb-4">Upload gambar yang akan tampil besar di atas daftar pendidik pada halaman utama.</p>
+        <div className="flex items-end gap-4 flex-wrap">
+          <FormField label="Gambar Utama">
+            <ImageUpload label="Pilih Gambar" preview={prestasiPreview}
+              onChange={(e) => { const f = e.target.files[0]; if (f) { setPrestasiFile(f); setPrestasiPreview(URL.createObjectURL(f)); } }}
+              hint="Rekomendasi: landscape, 16:9" />
+          </FormField>
+          {prestasiFile && (
+            <button onClick={savePrestasiImage} disabled={prestasiSaving}
+              className="bg-primary text-white font-bold px-5 py-2.5 rounded-xl text-sm hover:opacity-90 disabled:opacity-60 flex items-center gap-1.5">
+              {prestasiSaving ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+              {prestasiSaving ? 'Menyimpan...' : 'Simpan Gambar'}
+            </button>
+          )}
+        </div>
+      </Card>
+
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
         {teachers.map(t => (
           <div key={t.id}>
@@ -114,7 +153,6 @@ export default function TeachersPage() {
             ) : (
               <Card className="text-center relative">
                 <div className="absolute top-3 left-3 flex gap-1.5">
-                  {t.is_featured && <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full flex items-center gap-1">⭐ Utama</span>}
                   {!t.is_active && <span className="text-xs bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full">Nonaktif</span>}
                 </div>
                 {t.photo_url ? (

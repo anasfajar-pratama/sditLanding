@@ -27,8 +27,6 @@ class TeacherController extends Controller
         $data = $request->only(['name', 'position', 'education', 'bio']);
         $data['order'] = Teacher::count() + 1;
         $data['is_active'] = true;
-        // $data['is_featured'] = filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN);
-        $data['is_featured'] = $request->boolean('is_featured') ? 1 : 0;
         if ($request->hasFile('photo')) {
             $data['photo'] = ImageHelper::compress($request->file('photo'), 'teachers', 80);
         }
@@ -45,8 +43,7 @@ class TeacherController extends Controller
     {
         $teacher = Teacher::findOrFail($id);
 
-        $data = $request->only(['name', 'position', 'education', 'bio', 'order', 'is_active', 'is_featured']);
-        $data['is_featured'] = (int) $request->boolean('is_featured');
+        $data = $request->only(['name', 'position', 'education', 'bio', 'order', 'is_active']);
         
         if ($request->hasFile('photo')) {
             if ($teacher->photo) ImageHelper::delete($teacher->photo);

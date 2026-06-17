@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { fetchAll } from './api';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -14,6 +15,39 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import Butterflies from './components/Butterflies';
+import CategoryDetail from './components/CategoryDetail';
+
+function HomePage({ data }) {
+  const settings = data?.settings || {};
+  const hero = data?.hero || {};
+  const stats = data?.stats || [];
+  const about = data?.about || {};
+  const programs = data?.programs || [];
+  const teachers = data?.teachers || [];
+  const facilities = data?.facilities || [];
+  const testimonials = data?.testimonials || [];
+  const contact = data?.contact || {};
+  const gallery = data?.gallery || [];
+
+  return (
+    <div className="bg-white text-gray-800">
+      <Butterflies />
+      <Navbar settings={settings} />
+      <Hero hero={hero} settings={settings} />
+      <Stats stats={stats} />
+      <About about={about} />
+      <Programs programs={programs} />
+      <FacilitiesEskul facilities={facilities} />
+      <Teachers teachers={teachers} settings={settings} />
+      <Gallery gallery={gallery} />
+      <Testimonials testimonials={testimonials} />
+      <JoinUs settings={settings} />
+      <Contact contact={contact} settings={settings} />
+      <Footer settings={settings} contact={contact} />
+      <WhatsAppButton whatsapp={settings.whatsapp_number} />
+    </div>
+  );
+}
 
 export default function App() {
   const [data, setData] = useState(null);
@@ -37,33 +71,11 @@ export default function App() {
     );
   }
 
-  const settings = data?.settings || {};
-  const hero = data?.hero || {};
-  const stats = data?.stats || [];
-  const about = data?.about || {};
-  const programs = data?.programs || [];
-  const teachers = data?.teachers || [];
-  const facilities = data?.facilities || [];
-  const testimonials = data?.testimonials || [];
-  const contact = data?.contact || {};
-  const gallery = data?.gallery || [];
-
   return (
-    <div className="bg-white text-gray-800">
-      <Butterflies />
-      <Navbar settings={settings} />
-      <Hero hero={hero} settings={settings} />
-      <Stats stats={stats} />
-      <About about={about} />
-      <Programs programs={programs} />
-      <FacilitiesEskul facilities={facilities} />
-      <Teachers teachers={teachers} />
-      <Gallery gallery={gallery} />
-      <Testimonials testimonials={testimonials} />
-      <JoinUs settings={settings} />
-      <Contact contact={contact} settings={settings} />
-      <Footer settings={settings} contact={contact} />
-      <WhatsAppButton whatsapp={settings.whatsapp_number} />
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage data={data} />} />
+      <Route path="/:category" element={<CategoryDetail allData={data} />} />
+      <Route path="/:category/:id" element={<CategoryDetail allData={data} />} />
+    </Routes>
   );
 }

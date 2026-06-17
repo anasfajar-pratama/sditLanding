@@ -21,11 +21,6 @@ class GalleryController extends Controller
     {
         $request->validate(['image' => 'required|image|max:5120']);
 
-        $count = Gallery::count();
-        if ($count >= 12) {
-            return response()->json(['message' => 'Maksimal 12 gambar galeri.'], 422);
-        }
-
         $data = [
             'title' => $request->title ?? '',
             'image' => ImageHelper::compress($request->file('image'), 'gallery', 80),
