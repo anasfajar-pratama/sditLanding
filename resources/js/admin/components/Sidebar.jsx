@@ -3,7 +3,7 @@ import { useAdmin } from '../App';
 import {
   LayoutDashboard, Settings, Image, BarChart3, BookOpen,
   GraduationCap, Building, MessageSquare, Phone,
-  LogOut, X, Info, Images
+  LogOut, X, Info, Images, Shield, ClipboardList
 } from 'lucide-react';
 
 const navItems = [
@@ -18,6 +18,8 @@ const navItems = [
   { id: 'gallery', label: 'Galeri', icon: Images },
   { id: 'testimonials', label: 'Testimoni', icon: MessageSquare },
   { id: 'contact', label: 'Kontak', icon: Phone },
+  { id: 'admins', label: 'Kelola Admin', icon: Shield },
+  { id: 'activity-logs', label: 'Log Aktivitas', icon: ClipboardList },
 ];
 
 export default function Sidebar({ active, onNavigate, isOpen, onClose }) {

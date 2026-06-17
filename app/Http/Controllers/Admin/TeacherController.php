@@ -33,6 +33,8 @@ class TeacherController extends Controller
 
         $teacher = Teacher::create($data);
 
+        $this->logStore('guru', $teacher->name);
+
         return response()->json([
             'message' => 'Guru berhasil ditambahkan.',
             'data' => array_merge($teacher->toArray(), ['photo_url' => $teacher->photo_url]),
@@ -52,6 +54,8 @@ class TeacherController extends Controller
 
         $teacher->update($data);
 
+        $this->logUpdate('guru', $teacher->name);
+
         return response()->json([
             'message' => 'Guru berhasil diperbarui.',
             'data' => array_merge($teacher->toArray(), ['photo_url' => $teacher->photo_url]),
@@ -61,8 +65,12 @@ class TeacherController extends Controller
     public function destroy(int $id)
     {
         $teacher = Teacher::findOrFail($id);
+        $name = $teacher->name;
         if ($teacher->photo) ImageHelper::delete($teacher->photo);
         $teacher->delete();
+
+        $this->logDelete('guru', $name);
+
         return response()->json(['message' => 'Guru berhasil dihapus.']);
     }
 }

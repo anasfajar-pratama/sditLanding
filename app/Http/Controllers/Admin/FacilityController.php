@@ -34,6 +34,10 @@ class FacilityController extends Controller
 
         $facility = Facility::create($data);
 
+        $typeLabels = ['facility' => 'Fasilitas', 'eskul' => 'Ekstrakurikuler', 'kegiatan' => 'Kegiatan'];
+        $label = $typeLabels[$request->type] ?? $request->type;
+        $this->logStore(strtolower($label), $facility->name);
+
         return response()->json([
             'message' => ucfirst($request->type) . ' berhasil ditambahkan.',
             'data' => array_merge($facility->toArray(), ['image_url' => $facility->image_url]),
@@ -53,6 +57,8 @@ class FacilityController extends Controller
 
         $facility->update($data);
 
+        $this->logUpdate('fasilitas', $facility->name);
+
         return response()->json([
             'message' => 'Berhasil diperbarui.',
             'data' => array_merge($facility->toArray(), ['image_url' => $facility->image_url]),
@@ -62,8 +68,12 @@ class FacilityController extends Controller
     public function destroy(int $id)
     {
         $facility = Facility::findOrFail($id);
+        $name = $facility->name;
         if ($facility->image) ImageHelper::delete($facility->image);
         $facility->delete();
+
+        $this->logDelete('fasilitas', $name);
+
         return response()->json(['message' => 'Berhasil dihapus.']);
     }
 }

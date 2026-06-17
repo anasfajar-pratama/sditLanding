@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Administrator',
             'email' => env('ADMIN_EMAIL', 'admin@sditbungacempaka.sch.id'),
             'password' => env('ADMIN_PASSWORD', 'Admin@2024!'),
+            'role' => 'administrator',
         ]);
 
         // Settings
@@ -98,7 +99,7 @@ class DatabaseSeeder extends Seeder
 
         // Teachers
         $teachers = [
-            ['name' => 'Ustdzh. Siti Rahayu, S.Pd.I', 'position' => 'Kepala Sekolah', 'bio' => '15 tahun pengalaman, S2 Pendidikan Islam', 'order' => 1, 'is_featured' => true],
+            ['name' => 'Ustdzh. Siti Rahayu, S.Pd.I', 'position' => 'Kepala Sekolah', 'bio' => '15 tahun pengalaman, S2 Pendidikan Islam', 'order' => 1],
             ['name' => 'Ust. Ahmad Fauzi, S.Pd', 'position' => 'Guru Tahfidz', 'bio' => 'Hafidz 30 Juz, pengajar Al-Qur\'an berpengalaman', 'order' => 2],
             ['name' => 'Ustdzh. Nurlaila Hidayah, S.Pd', 'position' => 'Guru Kelas 1', 'bio' => 'Sabar, kreatif, dan sangat menyenangkan', 'order' => 3],
             ['name' => 'Ust. Ridwan Santosa, M.Pd', 'position' => 'Guru Matematika & Sains', 'bio' => 'Lulusan S2, menerapkan metode fun learning', 'order' => 4],
@@ -106,7 +107,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Ust. Hendra Permana, S.Pd', 'position' => 'Guru Olahraga & Pramuka', 'bio' => 'Energik, motivatif, dan aktif membimbing siswa', 'order' => 6],
         ];
         foreach ($teachers as $teacher) {
-            Teacher::create(array_merge($teacher, ['is_active' => true, 'is_featured' => $teacher['is_featured'] ?? false]));
+            Teacher::create(array_merge($teacher, ['is_active' => true]));
         }
 
         // Facilities

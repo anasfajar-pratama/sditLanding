@@ -59,6 +59,8 @@ class SettingController extends Controller
             Setting::set('prestasi_image', $path);
         }
 
+        $this->log('update_pengaturan', 'Memperbarui pengaturan website');
+
         return response()->json(['message' => 'Pengaturan berhasil disimpan.', 'data' => Setting::getAllAsArray()]);
     }
 }

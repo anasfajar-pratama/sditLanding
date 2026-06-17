@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Hash;
 
 class Admin extends Model
 {
-    protected $fillable = ['name', 'email', 'password'];
-
+    protected $fillable = ['name', 'email', 'role', 'password', 'is_suspended'];
     protected $hidden = ['password'];
+
+    protected $casts = ['is_suspended' => 'boolean'];
 
     public function setPasswordAttribute(string $value): void
     {
@@ -19,5 +20,10 @@ class Admin extends Model
     public function checkPassword(string $password): bool
     {
         return Hash::check($password, $this->password);
+    }
+
+    public function isAdministrator(): bool
+    {
+        return $this->role === 'administrator';
     }
 }

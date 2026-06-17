@@ -34,6 +34,8 @@ class ProgramController extends Controller
 
         $program = Program::create($data);
 
+        $this->logStore('program', $program->title);
+
         return response()->json([
             'message' => 'Program berhasil ditambahkan.',
             'data' => array_merge($program->toArray(), ['image_url' => $program->image_url]),
@@ -53,6 +55,8 @@ class ProgramController extends Controller
 
         $program->update($data);
 
+        $this->logUpdate('program', $program->title);
+
         return response()->json([
             'message' => 'Program berhasil diperbarui.',
             'data' => array_merge($program->toArray(), ['image_url' => $program->image_url]),
@@ -62,8 +66,12 @@ class ProgramController extends Controller
     public function destroy(int $id)
     {
         $program = Program::findOrFail($id);
+        $title = $program->title;
         if ($program->image) ImageHelper::delete($program->image);
         $program->delete();
+
+        $this->logDelete('program', $title);
+
         return response()->json(['message' => 'Program berhasil dihapus.']);
     }
 }

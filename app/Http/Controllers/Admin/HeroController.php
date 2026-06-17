@@ -33,6 +33,8 @@ class HeroController extends Controller
 
         $hero->save();
 
+        $this->log('update_hero', 'Memperbarui Hero Section');
+
         return response()->json([
             'message' => 'Hero berhasil diperbarui.',
             'data' => array_merge($hero->toArray(), ['image_url' => $hero->image_url]),

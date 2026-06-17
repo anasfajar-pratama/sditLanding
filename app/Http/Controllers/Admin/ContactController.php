@@ -27,6 +27,8 @@ class ContactController extends Controller
             }
         }
 
+        $this->log('update_kontak', 'Memperbarui informasi kontak');
+
         return response()->json([
             'message' => 'Kontak berhasil diperbarui.',
             'data' => ContactInfo::getAllAsArray(),
