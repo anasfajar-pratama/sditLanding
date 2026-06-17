@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\AdminManagementController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 // Public API endpoints (no auth)
 Route::prefix('public')->group(function () {
@@ -92,4 +94,14 @@ Route::prefix('admin')->middleware('admin.auth')->group(function () {
     Route::match(['post', 'put'], '/gallery/{id}', [GalleryController::class, 'update']);
     Route::delete('/gallery/{id}', [GalleryController::class, 'destroy']);
     Route::match(['post', 'put'], '/gallery/{id}/toggle', [GalleryController::class, 'toggle']);
+
+    // Admin management
+    Route::get('/admins', [AdminManagementController::class, 'index']);
+    Route::post('/admins', [AdminManagementController::class, 'store']);
+    Route::post('/admins/{id}/suspend', [AdminManagementController::class, 'suspend']);
+    Route::post('/admins/{id}/unsuspend', [AdminManagementController::class, 'unsuspend']);
+    Route::post('/admins/{id}/delete', [AdminManagementController::class, 'destroy']);
+
+    // Activity logs
+    Route::get('/activity-logs', [ActivityLogController::class, 'index']);
 });

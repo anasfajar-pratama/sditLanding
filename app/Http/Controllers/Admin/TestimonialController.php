@@ -33,6 +33,8 @@ class TestimonialController extends Controller
 
         $testimonial = Testimonial::create($data);
 
+        $this->logStore('testimoni', $testimonial->name);
+
         return response()->json([
             'message' => 'Testimoni berhasil ditambahkan.',
             'data' => array_merge($testimonial->toArray(), ['photo_url' => $testimonial->photo_url]),
@@ -52,6 +54,8 @@ class TestimonialController extends Controller
 
         $testimonial->update($data);
 
+        $this->logUpdate('testimoni', $testimonial->name);
+
         return response()->json([
             'message' => 'Testimoni berhasil diperbarui.',
             'data' => array_merge($testimonial->toArray(), ['photo_url' => $testimonial->photo_url]),
@@ -61,8 +65,12 @@ class TestimonialController extends Controller
     public function destroy(int $id)
     {
         $testimonial = Testimonial::findOrFail($id);
+        $name = $testimonial->name;
         if ($testimonial->photo) ImageHelper::delete($testimonial->photo);
         $testimonial->delete();
+
+        $this->logDelete('testimoni', $name);
+
         return response()->json(['message' => 'Testimoni berhasil dihapus.']);
     }
 }

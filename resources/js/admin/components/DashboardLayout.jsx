@@ -15,6 +15,8 @@ import TestimonialsPage from '../pages/TestimonialsPage';
 import ContactPage from '../pages/ContactPage';
 import DashboardHome from '../pages/DashboardHome';
 import GalleryPage from '../pages/GalleryPage';
+import AdminPage from '../pages/AdminPage';
+import ActivityLogPage from '../pages/ActivityLogPage';
 
 const PAGES = {
   dashboard: DashboardHome,
@@ -28,6 +30,8 @@ const PAGES = {
   testimonials: TestimonialsPage,
   contact: ContactPage,
   gallery: GalleryPage,
+  admins: AdminPage,
+  'activity-logs': ActivityLogPage,
 };
 
 export default function DashboardLayout() {

@@ -25,6 +25,8 @@ class AboutController extends Controller
         $about->fill($request->only(['title', 'content', 'vision', 'mission']));
         $about->save();
 
+        $this->log('update_tentang', 'Memperbarui section Tentang Kami');
+
         return response()->json(['message' => 'Tentang berhasil diperbarui.', 'data' => $about]);
     }
 
@@ -48,6 +50,8 @@ class AboutController extends Controller
             'order' => $count + 1,
         ]);
 
+        $this->log('upload_gambar_tentang', 'Menambahkan gambar section Tentang Kami');
+
         return response()->json([
             'message' => 'Gambar berhasil diupload.',
             'data' => array_merge($img->toArray(), ['image_url' => $img->image_url]),
@@ -59,6 +63,9 @@ class AboutController extends Controller
         $img = AboutImage::findOrFail($id);
         ImageHelper::delete($img->image);
         $img->delete();
+
+        $this->log('delete_gambar_tentang', 'Menghapus gambar section Tentang Kami');
+
         return response()->json(['message' => 'Gambar berhasil dihapus.']);
     }
 }

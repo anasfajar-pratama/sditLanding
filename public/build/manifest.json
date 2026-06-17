@@ -1,10 +1,10 @@
 {
-  "_jsx-runtime-DgUOJlUv.js": {
-    "file": "assets/jsx-runtime-DgUOJlUv.js",
+  "_jsx-runtime-DuBmDoJ9.js": {
+    "file": "assets/jsx-runtime-DuBmDoJ9.js",
     "name": "jsx-runtime"
   },
   "resources/css/app.css": {
-    "file": "assets/app--wb5SNb5.css",
+    "file": "assets/app-C3lY3RUS.css",
     "name": "app",
     "names": [
       "app.css"
@@ -13,27 +13,27 @@
     "isEntry": true
   },
   "resources/js/admin/main.jsx": {
-    "file": "assets/main-Dm1DNHUE.js",
+    "file": "assets/main-3FRXCamW.js",
     "name": "main",
     "src": "resources/js/admin/main.jsx",
     "isEntry": true,
     "imports": [
-      "_jsx-runtime-DgUOJlUv.js"
+      "_jsx-runtime-DuBmDoJ9.js"
     ],
     "css": [
-      "assets/app--wb5SNb5.css"
+      "assets/app-C3lY3RUS.css"
     ]
   },
   "resources/js/landing/main.jsx": {
-    "file": "assets/main-CBC0Nb3M.js",
+    "file": "assets/main-DdNVbgoz.js",
     "name": "main",
     "src": "resources/js/landing/main.jsx",
     "isEntry": true,
     "imports": [
-      "_jsx-runtime-DgUOJlUv.js"
+      "_jsx-runtime-DuBmDoJ9.js"
     ],
     "css": [
-      "assets/app--wb5SNb5.css"
+      "assets/app-C3lY3RUS.css"
     ]
   }
 }
