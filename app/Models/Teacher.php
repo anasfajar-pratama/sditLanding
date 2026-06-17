@@ -8,7 +8,7 @@ class Teacher extends Model
 {
     protected $fillable = ['name', 'position', 'education', 'photo', 'bio', 'order', 'is_active', 'is_featured'];
 
-    protected $casts = ['order' => 'integer', 'is_active' => 'boolean', 'is_featured' => 'boolean'];
+    protected $casts = ['order' => 'integer', 'is_active' => 'boolean'];
 
     public function getPhotoUrlAttribute(): ?string
     {

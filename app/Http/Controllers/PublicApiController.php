@@ -28,7 +28,7 @@ class PublicApiController extends Controller
             'facilities' => Facility::where('is_active', true)->orderBy('order')->get()->map(fn($f) => array_merge($f->toArray(), ['image_url' => $f->image_url])),
             'testimonials' => Testimonial::where('is_active', true)->get()->map(fn($t) => array_merge($t->toArray(), ['photo_url' => $t->photo_url])),
             'contact' => ContactInfo::getAllAsArray(),
-            'gallery' => Gallery::where('is_active', true)->where('image', '!=', '')->orderBy('order')->limit(6)->get()->map(fn($g) => array_merge($g->toArray(), ['image_url' => $g->image_url])),
+            'gallery' => Gallery::where('is_active', true)->where('image', '!=', '')->orderBy('order')->get()->map(fn($g) => array_merge($g->toArray(), ['image_url' => $g->image_url])),
         ]);
     }
 
@@ -92,7 +92,7 @@ class PublicApiController extends Controller
     public function gallery()
     {
         return response()->json(
-            Gallery::where('is_active', true)->where('image', '!=', '')->orderBy('order')->limit(6)->get()
+            Gallery::where('is_active', true)->where('image', '!=', '')->orderBy('order')->get()
                 ->map(fn($g) => array_merge($g->toArray(), ['image_url' => $g->image_url]))
         );
     }

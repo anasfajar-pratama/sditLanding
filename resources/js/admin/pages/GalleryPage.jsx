@@ -157,7 +157,7 @@ export default function GalleryPage() {
 
   return (
     <div>
-      <PageHeader title="Galeri" subtitle="Kelola foto-foto yang tampil di section galeri (maksimal 6 foto aktif)" />
+      <PageHeader title="Galeri" subtitle="Kelola foto-foto yang tampil di section galeri" />
 
       <Card className="mb-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -165,7 +165,7 @@ export default function GalleryPage() {
             <span className="font-semibold text-gray-700">{items.length}</span> total foto •{' '}
             <span className="font-semibold text-green-600">{activeCount}</span> ditampilkan
             {activeCount > 6 && (
-              <span className="text-orange-500 ml-2">⚠ Hanya 6 pertama yang tampil di website</span>
+              <span className="text-gray-400 ml-2">• Tampil 6 di halaman utama, sisanya di halaman galeri</span>
             )}
           </div>
           <label className={`flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-xl cursor-pointer hover:bg-orange-600 transition-colors ${uploading ? 'opacity-60 pointer-events-none' : ''}`}>

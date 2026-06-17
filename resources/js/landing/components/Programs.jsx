@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { BookOpen, Lightbulb, Heart, Globe, Cpu, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { BookOpen, Lightbulb, Heart, Globe, Cpu, Star, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 
 const iconMap = {
   'book-open': BookOpen,
@@ -40,7 +41,7 @@ export default function Programs({ programs }) {
             const Icon = iconMap[program.icon] || Star;
             const gradient = colors[i % colors.length];
             return (
-              <div key={program.id} className="group rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 card-lift bg-white border border-gray-100">
+              <Link key={program.id} to={`/program/${program.id}`} className="group rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 card-lift bg-white border border-gray-100">
                 {program.image_url ? (
                   <div className="img-zoom h-48">
                     <img src={program.image_url} alt={program.title} className="w-full h-full object-cover" />
@@ -57,7 +58,7 @@ export default function Programs({ programs }) {
                   <h3 className="font-display font-bold text-xl text-gray-800 mb-2">{program.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{program.description}</p>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
@@ -87,6 +88,17 @@ export default function Programs({ programs }) {
             >
               <ChevronRight className="w-5 h-5" />
             </button>
+          </div>
+        )}
+
+        {programs.length > ITEMS_PER_PAGE && (
+          <div className="text-center mt-10">
+            <Link
+              to="/program"
+              className="inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-full shadow-md hover:shadow-lg hover:bg-orange-600 transition-all text-sm"
+            >
+              Lihat Semua Program <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         )}
       </div>

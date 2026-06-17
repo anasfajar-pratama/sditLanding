@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 const FlowerIcon = ({ color = '#f97316' }) => (
   <svg width="32" height="32" viewBox="0 0 80 80">
@@ -38,10 +40,10 @@ function TeacherCard({ teacher, idx }) {
   );
 }
 
-export default function Teachers({ teachers }) {
+export default function Teachers({ teachers, settings }) {
   if (!teachers.length) return null;
-  const featured = teachers.find(t => t.is_featured) || teachers[0];
   const grid = teachers.slice(0, 6);
+  const prestasiImage = settings?.prestasi_image ? '/' + settings.prestasi_image : null;
 
   return (
     <section id="pendidik" className="py-20 bg-white">
@@ -53,13 +55,13 @@ export default function Teachers({ teachers }) {
           </p>
         </div>
 
-        {/* Featured photo */}
+        {/* Featured image */}
         <div className="max-w-2xl mx-auto mb-12 relative">
           <div className="rounded-3xl overflow-hidden shadow-xl aspect-video bg-gradient-to-br from-teal-100 to-orange-100">
-            {featured?.photo_url ? (
+            {prestasiImage ? (
               <img
-                src={featured.photo_url}
-                alt="Guru SDIT Bunga Cempaka"
+                src={prestasiImage}
+                alt="Pendidik SDIT Bunga Cempaka"
                 className="w-full h-full object-cover"
               />
             ) : (
@@ -80,6 +82,17 @@ export default function Teachers({ teachers }) {
             <TeacherCard key={teacher.id} teacher={teacher} idx={i} />
           ))}
         </div>
+
+        {teachers.length > 6 && (
+          <div className="text-center mt-10">
+            <Link
+              to="/pendidik"
+              className="inline-flex items-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-full shadow-md hover:shadow-lg hover:bg-orange-600 transition-all text-sm"
+            >
+              Lihat Semua Pendidik <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

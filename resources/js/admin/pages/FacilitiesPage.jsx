@@ -1,15 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { api } from '../api';
 import { FormField, Input, Textarea, Select, Card, PageHeader, ImageUpload } from '../components/FormField';
-import { Plus, Trash2, Edit, Check, X } from 'lucide-react';
+import {
+  Plus, Trash2, Edit, Check, X,
+  Home, Book, Monitor, Layers, Star, Coffee,
+  Compass, PenTool, Activity, Music, Cpu, BookOpen,
+  Map, Moon, Trophy, Award, Heart, Globe, Camera, Zap
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const ICONS = ['home', 'book', 'monitor', 'layers', 'star', 'coffee', 'compass', 'pen-tool', 'activity', 'music', 'cpu', 'book-open', 'map', 'moon', 'trophy', 'award', 'heart', 'globe', 'camera', 'zap'];
+const ICON_MAP = {
+  home: Home, book: Book, monitor: Monitor, layers: Layers, star: Star, coffee: Coffee,
+  compass: Compass, 'pen-tool': PenTool, activity: Activity, music: Music, cpu: Cpu,
+  'book-open': BookOpen, map: Map, moon: Moon, trophy: Trophy, award: Award,
+  heart: Heart, globe: Globe, camera: Camera, zap: Zap,
+};
+
+const ICONS = Object.keys(ICON_MAP);
+
 const TYPES = [
-  { value: 'facility', label: 'Fasilitas' },
-  { value: 'eskul', label: 'Ekstrakurikuler' },
-  { value: 'kegiatan', label: 'Kegiatan' },
+  { value: 'facility', label: 'Fasilitas', color: 'bg-blue-500' },
+  { value: 'eskul', label: 'Ekstrakurikuler', color: 'bg-orange-500' },
+  { value: 'kegiatan', label: 'Kegiatan', color: 'bg-teal-500' },
 ];
+
+function IconPicker({ value, onChange }) {
+  return (
+    <div className="grid grid-cols-8 gap-1.5 max-h-36 overflow-y-auto p-2 bg-white rounded-xl border-2 border-gray-200">
+      {ICONS.map(key => {
+        const Icon = ICON_MAP[key];
+        const selected = value === key;
+        return (
+          <button
+            key={key}
+            type="button"
+            onClick={() => onChange(key)}
+            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+              selected
+                ? 'bg-primary text-white shadow-sm scale-110'
+                : 'bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+            }`}
+            title={key}
+          >
+            <Icon className="w-4 h-4" />
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 function FacilityForm({ initial = {}, onSave, onCancel, isNew }) {
   const [form, setForm] = useState({
@@ -56,9 +95,7 @@ function FacilityForm({ initial = {}, onSave, onCancel, isNew }) {
           </Select>
         </FormField>
         <FormField label="Icon">
-          <Select value={form.icon} onChange={set('icon')}>
-            {ICONS.map(ic => <option key={ic} value={ic}>{ic}</option>)}
-          </Select>
+          <IconPicker value={form.icon} onChange={(v) => setForm(p => ({ ...p, icon: v }))} />
         </FormField>
       </div>
       <FormField label="Deskripsi">
@@ -90,11 +127,13 @@ function FacilityForm({ initial = {}, onSave, onCancel, isNew }) {
 
 function FacilityGroup({ title, type, items, onEdit, onDelete, editingId }) {
   if (!items.length && !editingId) return null;
+  const typeColor = TYPES.find(t => t.value === type)?.color || 'bg-gray-500';
   return (
     <div className="mb-6">
       <h3 className="font-display font-bold text-lg text-gray-700 mb-3 flex items-center gap-2">
-        <span className={`w-2 h-6 rounded-full ${type === 'facility' ? 'bg-blue-500' : type === 'eskul' ? 'bg-orange-500' : 'bg-teal-500'}`} />
+        <span className={`w-2 h-6 rounded-full ${typeColor}`} />
         {title}
+        <span className="text-sm font-normal text-gray-400 ml-1">({items.length})</span>
       </h3>
       <div className="space-y-2">
         {items.map(item => (
@@ -104,7 +143,9 @@ function FacilityGroup({ title, type, items, onEdit, onDelete, editingId }) {
                 {item.image_url ? (
                   <img src={item.image_url} alt={item.name} className="w-12 h-12 rounded-xl object-cover flex-shrink-0" />
                 ) : (
-                  <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0 text-gray-400 text-sm">{item.icon}</div>
+                  <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0 text-gray-400">
+                    {(() => { const Ic = ICON_MAP[item.icon]; return Ic ? <Ic className="w-5 h-5" /> : item.icon; })()}
+                  </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <div className="font-bold text-gray-800 text-sm flex items-center gap-2">
@@ -131,6 +172,7 @@ export default function FacilitiesPage() {
   const [adding, setAdding] = useState(false);
   const [editing, setEditing] = useState(null);
   const [addType, setAddType] = useState('facility');
+  const topRef = useRef(null);
 
   useEffect(() => { api.get('/facilities').then(setItems).catch(() => {}); }, []);
 
@@ -149,40 +191,49 @@ export default function FacilitiesPage() {
 
   const editItem = items.find(x => x.id === editing);
 
+  const handleEdit = (id) => {
+    setEditing(id);
+    topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <div>
       <PageHeader title="Fasilitas, Eskul & Kegiatan" subtitle="Kelola fasilitas sekolah, ekstrakurikuler, dan kegiatan" />
+      <div ref={topRef} />
 
-      {editing && editItem && (
+      {/* Add / Edit form always at top */}
+      {adding ? (
         <div className="mb-4">
-          <FacilityForm initial={editItem} onSave={save} onCancel={() => setEditing(null)} isNew={false} />
+          <FacilityForm onSave={save} onCancel={() => setAdding(false)} isNew initial={{ type: addType }} />
+        </div>
+      ) : (
+        <div className="flex items-center gap-3 flex-wrap mb-6">
+          <Select value={addType} onChange={e => setAddType(e.target.value)} className="w-auto">
+            {TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+          </Select>
+          <button onClick={() => setAdding(true)} className="flex items-center gap-2 bg-secondary text-white font-bold px-5 py-3 rounded-xl hover:opacity-90 transition-all text-sm">
+            <Plus className="w-4 h-4" /> Tambah {TYPES.find(t => t.value === addType)?.label}
+          </button>
         </div>
       )}
 
-      {['facility', 'eskul', 'kegiatan'].map((type, i) => (
+      {editing && editItem && (
+        <div className="mb-4">
+          <FacilityForm key={editing} initial={editItem} onSave={save} onCancel={() => setEditing(null)} isNew={false} />
+        </div>
+      )}
+
+      {['facility', 'eskul', 'kegiatan'].map((type) => (
         <FacilityGroup
           key={type}
           title={TYPES.find(t => t.value === type)?.label}
           type={type}
           items={getByType(type)}
-          onEdit={setEditing}
+          onEdit={handleEdit}
           onDelete={del}
           editingId={editing}
         />
       ))}
-
-      {adding ? (
-        <FacilityForm onSave={save} onCancel={() => setAdding(false)} isNew initial={{ type: addType }} />
-      ) : (
-        <div className="flex items-center gap-3 flex-wrap">
-          <Select value={addType} onChange={e => setAddType(e.target.value)} className="w-auto">
-            {TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-          </Select>
-          <button onClick={() => setAdding(true)} className="flex items-center gap-2 bg-secondary text-white font-bold px-5 py-3 rounded-xl hover:opacity-90 transition-all text-sm">
-            <Plus className="w-4 h-4" /> Tambah
-          </button>
-        </div>
-      )}
     </div>
   );
 }
